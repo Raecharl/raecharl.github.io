@@ -1,7 +1,190 @@
 <!DOCTYPE html>
 
 <head>
-<link rel="stylesheet" type="text/css" href='main.css'
+<link rel="stylesheet" type="text/css" href='main.css'>
+<script>
+	var audio;
+	var playlist;
+	var debug;
+	
+	function init() { 
+		audio = document.getElementById('audio');
+		playlist = document.getElementById('playlist');
+		debug = document.getElementById('debug');
+				
+		playlist.addEventListener('click',function (e) { 
+			e.preventDefault();
+			updateEventLog('<strong>You clicked a title in the playlist</strong>');
+			var mp3File = e.target.toString();
+			swapSource(mp3File);
+		}, false);
+
+		audio.addEventListener('abort',function () { 
+			updateEventLog('abort');
+		}, false);
+
+		audio.addEventListener('canplay',function () { 
+			updateEventLog('canplay');
+		}, false);
+
+		audio.addEventListener('canplaythrough',function () { 
+			updateEventLog('canplaythrough');
+		}, false);
+
+		audio.addEventListener('canshowcurrentframe',function () { 
+			updateEventLog('canshowcurrentframe');
+		}, false);
+
+		audio.addEventListener('dataunavailable',function () { 
+			updateEventLog('dataunavailable');
+		}, false);
+
+		audio.addEventListener('durationchange',function () { 
+			updateEventLog('durationchange');
+		}, false);
+
+		audio.addEventListener('emptied',function () { 
+			updateEventLog('emptied');
+		}, false);
+
+		audio.addEventListener('empty',function () { 
+			updateEventLog('empty');
+		}, false);
+
+		audio.addEventListener('ended',function () { 
+			updateEventLog('ended');
+		}, false);
+
+		audio.addEventListener('error',function () { 
+			var newError = document.createElement('li');
+			newError.innerHTML = '<strong>error code: ' + audio.error.code + '</strong>';
+			var errorDetail = document.createElement('ul');
+			
+			var errorCode = document.createElement('li');
+			switch (audio.error.code) {
+				case audio.error.MEDIA_ERR_ABORTED:
+					errorCode.innerHTML = 'Error: MEDIA_ERR_ABORTED';
+					break;
+				case audio.error.MEDIA_ERR_NETWORK:
+					errorCode.innerHTML = 'Error: MEDIA_ERR_NETWORK';
+					break;
+				case audio.error.MEDIA_ERR_DECODE:
+					errorCode.innerHTML = 'Error: MEDIA_ERR_DECODE';
+					break;
+				case audio.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+					errorCode.innerHTML = 'Error: MEDIA_ERR_SRC_NOT_SUPPORTED';
+					break;
+				default:
+					errorCode.innerHTML = 'Error: unknown';
+					break;
+			}
+			errorDetail.appendChild(errorCode);
+
+			var networkState = document.createElement('li');
+			var networkStateStr = 'networkState: ' + audio.networkState;
+			switch (audio.networkState) {
+				case 0:
+					networkStateStr += ' (NETWORK_EMPTY)';
+					break;
+				case 1:
+					networkStateStr += ' (NETWORK_IDLE)';
+					break;
+				case 2:
+					networkStateStr += ' (NETWORK_LOADING)';
+					break;
+				case 3:
+					networkStateStr += ' (NETWORKING_NO_SOURCE)';
+					break;
+				default:
+					networkStateStr += ' (unknown networkState)';
+					break;
+			}
+			networkState.innerHTML = networkStateStr;
+			errorDetail.appendChild(networkState);
+			
+			//now append entire nested <ul> to events list
+			newError.appendChild(errorDetail);
+			debug.appendChild(newError);
+		}, false);
+
+		audio.addEventListener('loadeddata',function () { 
+			updateEventLog('loadeddata');
+		}, false);
+
+		audio.addEventListener('loadedmetadata',function () { 
+			updateEventLog('loadedmetadata');
+		}, false);
+
+		audio.addEventListener('loadstart',function () { 
+			updateEventLog('loadstart');
+		}, false);
+
+		audio.addEventListener('mozaudioavailable',function () { 
+			updateEventLog('mozaudioavailable');
+		}, false);
+
+		audio.addEventListener('pause',function () { 
+			updateEventLog('pause');
+		}, false);
+
+		audio.addEventListener('play',function () { 
+			updateEventLog('play');
+		}, false);
+
+		audio.addEventListener('ratechange',function () { 
+			updateEventLog('ratechange');
+		}, false);
+
+		audio.addEventListener('seeked',function () { 
+			updateEventLog('seeked');
+		}, false);
+
+		audio.addEventListener('seeking',function () { 
+			updateEventLog('seeking');
+		}, false);
+
+		audio.addEventListener('suspend',function () { 
+			updateEventLog('suspend');
+		}, false);
+
+		audio.addEventListener('volumechange',function () { 
+			updateEventLog('volumechange');
+		}, false);
+
+		audio.addEventListener('waiting',function () { 
+			updateEventLog('waiting');
+		}, false);		
+	}
+
+	function swapSource(mp3File) { 
+		var oggFile = mp3File.substr(0,mp3File.length-4) + '.ogg';
+		var sources = document.getElementsByTagName('source');
+		sources[0].setAttribute('src',oggFile);
+		sources[1].setAttribute('src',mp3File);
+		audio.load();
+	}
+	
+	function updateEventLog(eventDescription) { 
+		var newEvent = document.createElement('li');
+		newEvent.innerHTML = eventDescription;
+		debug.appendChild(newEvent);
+	}
+	window.onload=init;
+</script>
+    <div role="banner">
+</div>
+	<audio id="audio" preload="auto" tabindex="0" controls>
+		<source type="audio/mpeg" src="catty.mp3"/>
+		<source type="audio/mpeg" src="meowmusic.mp3"/>
+		Sorry, your browser does not support HTML5 audio.
+	</audio>
+	<ul id="playlist">
+		<li><a href="catty.mp3">Every Day</a></li>
+		<li><a href="meowmusic.mp3">The Paul Allen Song</a></li></li>
+	</ul>
+	
+	
+</div><!-- end #main-->
 </head>
 <title>Party With Giffs</title>
 <body>
@@ -11,10 +194,10 @@
 <img src=http://rs895.pbsrc.com/albums/ac159/GIFsforhire/Dancing/bacon.gif~c200>
 <img src=http://mrwgifs.com/wp-content/uploads/2013/11/Vladmir-Putin-Dance-Gif-In-a-Snappy-Suit.gif>    
 <img src=https://media.giphy.com/media/Z3Jjy7Anx5KEg/giphy.gif>
-    
-    
-    
-    
-    
-    
+<img src=https://i.imgflip.com/7z5vi.gif>
+<img src=http://rs415.pbsrc.com/albums/pp236/Keefers_/Animated/e01c2890.gif~c200>
+<img src=http://cdn.osxdaily.com/wp-content/uploads/2013/07/dancing-banana.gif>
+<img src=https://media.giphy.com/media/4aBQ9oNjgEQ2k/giphy.gif>    
+
 </body>
+    </html>
